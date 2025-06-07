@@ -615,7 +615,9 @@ ngx_http_upstream_json_hash_murmur3(const void *key, int len, uint32_t seed)
     
     switch(len & 3) {
         case 3: k1 ^= tail[2] << 16;
+                /* fallthrough */
         case 2: k1 ^= tail[1] << 8;
+                /* fallthrough */
         case 1: k1 ^= tail[0];
                 k1 *= c1; k1 = (k1 << 15) | (k1 >> 17); k1 *= c2; h1 ^= k1;
     };
@@ -1478,7 +1480,11 @@ ngx_http_upstream_json_hash_log_stats(ngx_http_request_t *r, ngx_http_upstream_j
         ngx_atomic_t parse_time = jhcf->json_parse_time;
         
         /* 检查统计变量的溢出风险并自动重置 */
-        if (requests > (NGX_ATOMIC_T_MAX / 2)) {
+#if (NGX_PTR_SIZE == 8)
+        if (requests > (ULONG_MAX / 2)) {
+#else
+        if (requests > (UINT_MAX / 2)) {
+#endif
             ngx_atomic_t reset_count = ngx_atomic_fetch_add(&jhcf->stats_resets, 1) + 1;
             
             ngx_log_error(NGX_LOG_WARN, r->connection->log, 0,
