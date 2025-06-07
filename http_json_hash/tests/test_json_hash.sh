@@ -113,7 +113,7 @@ http {
     
     # 主要的代理服务器
     server {
-        listen 9999;
+        listen 9997;
         
         location /api/ {
             proxy_pass http://test_backend;
@@ -172,7 +172,7 @@ send_test_request() {
     local response=$(curl -s -X POST \
         -H "Content-Type: application/json" \
         -d "${json_data}" \
-        "http://localhost:9999/api/test")
+        "http://localhost:9997/api/test")
     
     if [ $? -eq 0 ]; then
         echo "$response"
@@ -287,7 +287,7 @@ test_error_handling() {
     local response=$(curl -s -X POST \
         -H "Content-Type: application/json" \
         -d "invalid json" \
-        "http://localhost:9999/api/test")
+        "http://localhost:9997/api/test")
     
     if [[ "$response" != "" ]]; then
         log_info "✓ 无效JSON处理正常"
@@ -300,7 +300,7 @@ test_error_handling() {
     local response=$(curl -s -X POST \
         -H "Content-Type: application/json" \
         -d '{"action": "test", "timestamp": 1234567890}' \
-        "http://localhost:9999/api/test")
+        "http://localhost:9997/api/test")
     
     if [[ "$response" != "" ]]; then
         log_info "✓ 缺少字段处理正常"

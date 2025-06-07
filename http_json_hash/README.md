@@ -2,6 +2,8 @@
 
 一个基于JSON请求体字段进行负载均衡的高性能nginx模块，支持一致性哈希算法，具备企业级生产就绪的安全性和可配置性。
 
+**📍 重要说明：此模块已完全集成到本版本nginx源码中，无需单独编译安装！**
+
 ## 🚀 特性
 
 ### 核心功能
@@ -30,34 +32,30 @@
 - **依赖库**: libcjson-dev
 - **编译器**: GCC 4.8+ 或 Clang 3.3+
 
-## 📂 项目结构
+## 📂 模块文件结构
 
 ```
 nginx/                                    # nginx主目录
 ├── src/http/modules/
-│   └── ngx_http_upstream_json_hash_module.c    # 模块源码
+│   └── ngx_http_upstream_json_hash_module.c    # 模块源码（已集成）
 └── http_json_hash/                       # 模块管理目录
     ├── README.md                         # 本文档
-    ├── LICENSE                           # MIT许可证
-    ├── Makefile                          # 自动化构建工具
-    ├── CHANGELOG.md                      # 版本更新日志
-    ├── config/                           # 配置示例
-    │   ├── json_hash_module_example.conf
+    ├── examples/                         # 配置示例
+    │   ├── basic.conf                    # 基础配置示例
+    │   ├── advanced.conf                 # 高级配置示例
     │   ├── production.conf               # 生产环境配置
-    │   ├── test_complete_config.conf
-    │   └── test_module_config.conf
-    ├── test/                             # 测试脚本
-    │   ├── comprehensive_test.sh         # 综合测试套件
-    │   ├── test_json_hash.sh            # 完整功能测试
-    │   └── test_json_hash_simple.sh     # 基础测试
-    ├── scripts/                          # 部署脚本
-    │   └── install.sh                    # 自动化安装脚本
-    └── docs/                             # 文档目录
-        ├── OPTIMIZATION_SUMMARY.md
-        └── json_hash_module_README.md
+    │   ├── test_complete_config.conf     # 完整测试配置
+    │   └── test_module_config.conf       # 模块测试配置
+    ├── tests/                            # 测试脚本
+    │   ├── test_json_hash_simple.sh      # 基础测试
+    │   ├── test_json_hash.sh             # 完整功能测试
+    │   └── comprehensive_test.sh         # 综合测试套件
+    └── docs/                             # 扩展文档
+        ├── OPTIMIZATION_SUMMARY.md       # 性能优化总结
+        └── json_hash_module_README.md    # 详细技术文档
 ```
 
-## 🛠 安装
+## 🛠 编译安装
 
 ### 1. 安装依赖
 
@@ -70,22 +68,15 @@ sudo apt-get install libcjson-dev
 #### CentOS/RHEL
 ```bash
 sudo yum install libcjson-devel
-# 或者在较新的系统上
+# 或在较新的系统上
 sudo dnf install libcjson-devel
 ```
 
-### 2. 编译安装
+### 2. 编译nginx（模块已集成）
 
 ```bash
-# 下载nginx源码
-wget http://nginx.org/download/nginx-1.20.2.tar.gz
-tar -xzf nginx-1.20.2.tar.gz
-cd nginx-1.20.2
-
-# 复制模块源码（模块源码已在标准nginx目录中）
-# 模块文件位置：src/http/modules/ngx_http_upstream_json_hash_module.c
-
-# 配置编译参数
+# 在当前nginx源码目录中（模块已集成）
+# 配置编译参数（json_hash模块自动包含）
 ./configure \
     --prefix=/usr/local/nginx \
     --with-http_ssl_module \
@@ -96,10 +87,14 @@ make -j$(nproc)
 sudo make install
 ```
 
-### 3. 验证安装
+### 3. 验证模块
 
 ```bash
-/usr/local/nginx/sbin/nginx -V 2>&1 | grep json_hash
+# 检查nginx版本和编译选项
+/usr/local/nginx/sbin/nginx -V
+
+# 测试配置文件语法
+/usr/local/nginx/sbin/nginx -t
 ```
 
 ## ⚙️ 配置参数
@@ -190,7 +185,7 @@ upstream backend {
 ### 运行测试套件
 
 ```bash
-cd http_json_hash/test
+cd http_json_hash/tests
 chmod +x *.sh
 
 # 基础功能测试
@@ -238,7 +233,7 @@ possible system overload or configuration issue
 
 ## 🚀 性能基准
 
-基于nginx-1.20.2 + 4核8GB环境的性能测试：
+基于本版本nginx + 4核8GB环境的性能测试：
 
 | 场景 | QPS | 平均延迟 | P99延迟 |
 |------|-----|---------|---------|
@@ -293,14 +288,14 @@ location /api/ {
 ### 开发环境设置
 
 ```bash
-git clone <repository>
+# 在nginx源码根目录
 cd nginx
 
 # 运行测试
-cd http_json_hash && make test
+cd http_json_hash/tests && chmod +x *.sh && ./test_json_hash_simple.sh
 
-# 代码检查
-make lint
+# 编译测试
+make clean && make
 ```
 
 ## 📄 许可证
