@@ -107,6 +107,7 @@ HTTP_UPSTREAM_LEAST_CONN=YES
 HTTP_UPSTREAM_RANDOM=YES
 HTTP_UPSTREAM_KEEPALIVE=YES
 HTTP_UPSTREAM_ZONE=YES
+HTTP_UPSTREAM_JSON_HASH=YES
 
 # STUB
 HTTP_STUB_STATUS=NO
@@ -284,14 +285,15 @@ $0: warning: the \"--with-ipv6\" option is deprecated"
         --without-http_limit_req_module) HTTP_LIMIT_REQ=NO         ;;
         --without-http_empty_gif_module) HTTP_EMPTY_GIF=NO          ;;
         --without-http_browser_module)   HTTP_BROWSER=NO            ;;
-        --without-http_upstream_hash_module) HTTP_UPSTREAM_HASH=NO  ;;
+                --without-http_upstream_hash_module) HTTP_UPSTREAM_HASH=NO  ;;
         --without-http_upstream_ip_hash_module) HTTP_UPSTREAM_IP_HASH=NO ;;
         --without-http_upstream_least_conn_module)
                                          HTTP_UPSTREAM_LEAST_CONN=NO ;;
-        --without-http_upstream_random_module)
+        --without-http_upstream_random_module) 
                                          HTTP_UPSTREAM_RANDOM=NO    ;;
         --without-http_upstream_keepalive_module) HTTP_UPSTREAM_KEEPALIVE=NO ;;
         --without-http_upstream_zone_module) HTTP_UPSTREAM_ZONE=NO  ;;
+        --without-http_upstream_json_hash_module) HTTP_UPSTREAM_JSON_HASH=NO  ;;
 
         --with-http_perl_module)         HTTP_PERL=YES              ;;
         --with-http_perl_module=dynamic) HTTP_PERL=DYNAMIC          ;;
