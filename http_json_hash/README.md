@@ -30,6 +30,33 @@
 - **依赖库**: libcjson-dev
 - **编译器**: GCC 4.8+ 或 Clang 3.3+
 
+## 📂 项目结构
+
+```
+nginx/                                    # nginx主目录
+├── src/http/modules/
+│   └── ngx_http_upstream_json_hash_module.c    # 模块源码
+└── http_json_hash/                       # 模块管理目录
+    ├── README.md                         # 本文档
+    ├── LICENSE                           # MIT许可证
+    ├── Makefile                          # 自动化构建工具
+    ├── CHANGELOG.md                      # 版本更新日志
+    ├── config/                           # 配置示例
+    │   ├── json_hash_module_example.conf
+    │   ├── production.conf               # 生产环境配置
+    │   ├── test_complete_config.conf
+    │   └── test_module_config.conf
+    ├── test/                             # 测试脚本
+    │   ├── comprehensive_test.sh         # 综合测试套件
+    │   ├── test_json_hash.sh            # 完整功能测试
+    │   └── test_json_hash_simple.sh     # 基础测试
+    ├── scripts/                          # 部署脚本
+    │   └── install.sh                    # 自动化安装脚本
+    └── docs/                             # 文档目录
+        ├── OPTIMIZATION_SUMMARY.md
+        └── json_hash_module_README.md
+```
+
 ## 🛠 安装
 
 ### 1. 安装依赖
@@ -55,15 +82,14 @@ wget http://nginx.org/download/nginx-1.20.2.tar.gz
 tar -xzf nginx-1.20.2.tar.gz
 cd nginx-1.20.2
 
-# 复制模块源码
-cp /path/to/http_json_hash/src/ngx_http_upstream_json_hash_module.c src/http/modules/
+# 复制模块源码（模块源码已在标准nginx目录中）
+# 模块文件位置：src/http/modules/ngx_http_upstream_json_hash_module.c
 
 # 配置编译参数
 ./configure \
     --prefix=/usr/local/nginx \
     --with-http_ssl_module \
-    --with-http_v2_module \
-    --add-module=path/to/http_json_hash
+    --with-http_v2_module
 
 # 编译安装
 make -j$(nproc)
@@ -268,10 +294,10 @@ location /api/ {
 
 ```bash
 git clone <repository>
-cd http_json_hash
+cd nginx
 
 # 运行测试
-make test
+cd http_json_hash && make test
 
 # 代码检查
 make lint

@@ -51,7 +51,7 @@ download-nginx:
 .PHONY: compile
 compile: check-deps download-nginx
 	@echo -e "$(GREEN)[INFO]$(NC) Compiling nginx with JSON hash module..."
-	@cp $(MODULE_DIR)/src/ngx_http_upstream_json_hash_module.c $(TEMP_DIR)/nginx-$(NGINX_VERSION)/src/http/modules/
+	@cp $(MODULE_DIR)/../src/http/modules/ngx_http_upstream_json_hash_module.c $(TEMP_DIR)/nginx-$(NGINX_VERSION)/src/http/modules/
 	@cd $(TEMP_DIR)/nginx-$(NGINX_VERSION) && \
 		./configure \
 			--prefix=$(NGINX_PREFIX) \
@@ -160,7 +160,7 @@ test-perf:
 lint:
 	@echo -e "$(GREEN)[INFO]$(NC) Running code format check..."
 	@if command -v clang-format >/dev/null 2>&1; then \
-		clang-format --dry-run --Werror $(MODULE_DIR)/src/*.c; \
+		clang-format --dry-run --Werror $(MODULE_DIR)/../src/http/modules/ngx_http_upstream_json_hash_module.c; \
 		echo -e "$(GREEN)[INFO]$(NC) Code format check passed"; \
 	else \
 		echo -e "$(YELLOW)[WARN]$(NC) clang-format not found, skipping lint"; \
@@ -171,7 +171,7 @@ lint:
 format:
 	@echo -e "$(GREEN)[INFO]$(NC) Formatting code..."
 	@if command -v clang-format >/dev/null 2>&1; then \
-		clang-format -i $(MODULE_DIR)/src/*.c; \
+		clang-format -i $(MODULE_DIR)/../src/http/modules/ngx_http_upstream_json_hash_module.c; \
 		echo -e "$(GREEN)[INFO]$(NC) Code formatted successfully"; \
 	else \
 		echo -e "$(YELLOW)[WARN]$(NC) clang-format not found, skipping format"; \

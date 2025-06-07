@@ -123,7 +123,7 @@ compile_nginx() {
     log_info "Compiling nginx with JSON hash module..."
     
     # 复制模块源码
-    cp "$module_dir/src/ngx_http_upstream_json_hash_module.c" "$nginx_dir/src/http/modules/"
+    cp "$module_dir/../src/http/modules/ngx_http_upstream_json_hash_module.c" "$nginx_dir/src/http/modules/"
     
     cd $nginx_dir
     
